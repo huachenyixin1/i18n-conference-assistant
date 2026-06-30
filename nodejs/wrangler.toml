@@ -1,0 +1,23 @@
+name = "hwi18n"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+JWT_SECRET_KEY = "change-this-in-production"
+ENCRYPTION_KEY = "change-this-in-production"
+DOMAIN = "106605.xyz"
+ALLOWED_ORIGINS = "https://hwi18n.106605.xyz,https://i18n.106605.xyz,https://hwi18n.pages.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jdyspa-db"
+database_id = "42469b4f-6657-4eca-b689-5c75888d5d57"
+
+# KV用于存储登录失败次数和锁定状态
+[[kv_namespaces]]
+binding = "KV"
+id = "a9ff5864ef3945089901a5ea4bf0fa59"
+
+[observability]
+enabled = true

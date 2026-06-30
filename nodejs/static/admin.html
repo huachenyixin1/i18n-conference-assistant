@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Backend - Conference Reception Assistant</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        /* 登录页的语言切换下拉菜单样式 */
+        #loginLangSelect {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            /* 只在登录页可见时显示 */
+            display: block;
+        }
+
+        /* 当登录页隐藏时，隐藏登录页的语言切换按钮 */
+        #loginPage[style*="display: none"] #loginLangSelect {
+            display: none;
+        }
+
+        /* 通用语言切换按钮样式 */
+        .lang-select-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 登录页的语言切换按钮样式 */
+        #loginLangSelect .lang-select-btn:hover {
+            border-color: #4a90d9;
+            color: #4a90d9;
+        }
+
+        /* 通用语言切换菜单样式 */
+        .lang-select-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 0;
+            min-width: 150px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .lang-select-menu.show {
+            display: block;
+        }
+
+        .lang-select-menu li {
+            padding: 8px 16px;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .lang-select-menu li:hover {
+            background: #f5f7fa;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #4a90d9;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #357abd;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .admin-container {
+            display: none;
+        }
+
+        .admin-header {
+            background: #2c3e50;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 20px;
+        }
+
+        .admin-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-header .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* 管理后台header中的语言切换 */
+        .admin-header .lang-select-wrapper {
+            position: static;
+        }
+
+        .admin-header .lang-select-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .admin-header .lang-select-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-header .lang-select-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #2c3e50;
+            border: 1px solid white;
+        }
+
+        .admin-header .lang-select-menu li {
+            color: white;
+        }
+
+        .admin-header .lang-select-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-nav {
+            background: #34495e;
+            padding: 0 24px;
+        }
+
+        .admin-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 0;
+        }
+
+        .admin-nav li a {
+            display: block;
+            padding: 16px 24px;
+            color: #bdc3c7;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .admin-nav li a:hover {
+            color: white;
+        }
+
+        .admin-nav li a.active {
+            color: white;
+            border-bottom-color: #4a90d9;
+        }
+
+        .admin-content {
+            padding: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4a90d9;
+            color: #4a90d9;
+        }
+
+        .btn-outline:hover {
+            background: #4a90d9;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-unused {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-used {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4a90d9;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            display: none;
+            z-index: 2000;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btns .btn-small {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-label {
+            color: #666;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 登录页的语言切换下拉菜单 -->
+    <div class="lang-select-wrapper" id="loginLangSelect">
+        <button class="lang-select-btn" onclick="toggleLangMenu()">
+            <span id="langSelectBtnText">English</span>
+        </button>
+        <ul class="lang-select-menu" id="langSelectMenu">
+            <li data-lang="zh-CN" onclick="switchLang('zh-CN')">中文</li>
+            <li data-lang="en-US" onclick="switchLang('en-US')">English</li>
+            <li data-lang="ja-JP" onclick="switchLang('ja-JP')">日本語</li>
+            <li data-lang="ms-MY" onclick="switchLang('ms-MY')">Melayu</li>
+            <li data-lang="vi-VN" onclick="switchLang('vi-VN')">Tiếng Việt</li>
+            <li data-lang="km-KH" onclick="switchLang('km-KH')">ភាសាខ្មែរ</li>
+            <li data-lang="mn-MN" onclick="switchLang('mn-MN')">Монгол</li>
+            <li data-lang="bo-CN" onclick="switchLang('bo-CN')">བོད་</li>
+            <li data-lang="th-TH" onclick="switchLang('th-TH')">ภาษาไทย</li>
+            <li data-lang="ko-KR" onclick="switchLang('ko-KR')">한국어</li>
+            <li data-lang="id-ID" onclick="switchLang('id-ID')">Bahasa Indonesia</li>
+            <li data-lang="hi-IN" onclick="switchLang('hi-IN')">हिन्दी</li>
+            <li data-lang="fr-FR" onclick="switchLang('fr-FR')">Français</li>
+            <li data-lang="pt-BR" onclick="switchLang('pt-BR')">Português</li>
+            <li data-lang="ru-RU" onclick="switchLang('ru-RU')">Русский</li>
+        </ul>
+    </div>
+
+    <div id="loginPage" class="login-container">
+        <div class="login-header">
+            <h1 data-i18n="admin.login.title">🔐 Admin Backend</h1>
+            <p data-i18n="admin.login.subtitle">Conference Reception Assistant Admin Login</p>
+        </div>
+        <div class="error-message" id="errorMessage"></div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label data-i18n="admin.login.username">Username</label>
+                <input type="text" id="username" required data-i18n-placeholder="admin.login.enterUsername"
+                    placeholder="Enter admin username">
+            </div>
+            <div class="form-group">
+                <label data-i18n="admin.login.password">Password</label>
+                <input type="password" id="password" required data-i18n-placeholder="admin.login.enterPassword"
+                    placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary" data-i18n="admin.login.button">Login</button>
+        </form>
+    </div>
+
+    <div id="adminPage" class="admin-container">
+        <div class="admin-header">
+            <h1 data-i18n="admin.header.title">🔐 Admin Backend</h1>
+            <div class="user-info">
+                <!-- 管理后台header中的语言切换 -->
+                <div class="lang-select-wrapper">
+                    <button class="lang-select-btn" onclick="toggleLangMenu()">
+                        <span id="langSelectBtnTextHeader">English</span>
+                    </button>
+                    <ul class="lang-select-menu" id="langSelectMenuHeader">
+                        <li data-lang="zh-CN" onclick="switchLang('zh-CN')">中文</li>
+                        <li data-lang="en-US" onclick="switchLang('en-US')">English</li>
+                        <li data-lang="ja-JP" onclick="switchLang('ja-JP')">日本語</li>
+                        <li data-lang="ms-MY" onclick="switchLang('ms-MY')">Melayu</li>
+                        <li data-lang="vi-VN" onclick="switchLang('vi-VN')">Tiếng Việt</li>
+                        <li data-lang="km-KH" onclick="switchLang('km-KH')">ភាសាខ្មែរ</li>
+                        <li data-lang="mn-MN" onclick="switchLang('mn-MN')">Монгол</li>
+                        <li data-lang="bo-CN" onclick="switchLang('bo-CN')">བོད་</li>
+                        <li data-lang="th-TH" onclick="switchLang('th-TH')">ภาษาไทย</li>
+                        <li data-lang="ko-KR" onclick="switchLang('ko-KR')">한국어</li>
+                        <li data-lang="id-ID" onclick="switchLang('id-ID')">Bahasa Indonesia</li>
+                        <li data-lang="hi-IN" onclick="switchLang('hi-IN')">हिन्दी</li>
+                        <li data-lang="fr-FR" onclick="switchLang('fr-FR')">Français</li>
+                        <li data-lang="pt-BR" onclick="switchLang('pt-BR')">Português</li>
+                        <li data-lang="ru-RU" onclick="switchLang('ru-RU')">Русский</li>
+                    </ul>
+                </div>
+                <span id="adminName" data-i18n="admin.header.admin">Admin</span>
+                <button class="logout-btn" onclick="logout()" data-i18n="admin.header.logout">Logout</button>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="#dashboard" class="active" onclick="showTab('dashboard')"
+                        data-i18n="admin.nav.dashboard">Dashboard</a></li>
+                <li><a href="#codes" onclick="showTab('codes')" data-i18n="admin.nav.codes">Invitation Codes</a></li>
+                <li><a href="#users" onclick="showTab('users')" data-i18n="admin.nav.users">User Management</a></li>
+                <li><a href="#stats" onclick="showTab('stats')" data-i18n="admin.nav.stats">Usage Statistics</a></li>
+            </ul>
+        </nav>
+
+        <div class="admin-content">
+            <div id="tab-dashboard">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statUsers">0</div>
+                        <div class="stat-label" data-i18n="admin.dashboard.registeredUsers">Registered Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statConferences">0</div>
+                        <div class="stat-label" data-i18n="admin.dashboard.totalConferences">Total Conferences</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statParticipants">0</div>
+                        <div class="stat-label" data-i18n="admin.dashboard.participants">Participants</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCodes">0</div>
+                        <div class="stat-label" data-i18n="admin.dashboard.invitationCodes">Invitation Codes</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-codes" style="display:none">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title" data-i18n="admin.codes.title">Invitation Codes List</span>
+                        <button class="btn btn-primary btn-small" onclick="openGenerateModal()"
+                            data-i18n="admin.codes.generate">Generate Code</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="admin.codes.table.code">Code</th>
+                                        <th data-i18n="admin.codes.table.validDays">Valid Days</th>
+                                        <th data-i18n="admin.codes.table.usageCount">Usage Count</th>
+                                        <th data-i18n="admin.codes.table.status">Status</th>
+                                        <th data-i18n="admin.codes.table.lastUsed">Last Used</th>
+                                        <th data-i18n="admin.codes.table.createdTime">Created Time</th>
+                                        <th data-i18n="admin.codes.table.actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="codesTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-users" style="display:none">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title" data-i18n="admin.users.title">User List</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="admin.users.table.username">Username</th>
+                                        <th data-i18n="admin.users.table.email">Email</th>
+                                        <th data-i18n="admin.users.table.role">Role</th>
+                                        <th data-i18n="admin.users.table.subscriptionStart">Subscription Start</th>
+                                        <th data-i18n="admin.users.table.subscriptionEnd">Subscription End</th>
+                                        <th data-i18n="admin.users.table.lastActive">Last Active</th>
+                                        <th data-i18n="admin.users.table.actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-stats" style="display:none">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title" data-i18n="admin.stats.title">User Usage Statistics</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="admin.stats.table.username">Username</th>
+                                        <th data-i18n="admin.stats.table.conferences">Conferences</th>
+                                        <th data-i18n="admin.stats.table.participants">Participants</th>
+                                        <th data-i18n="admin.stats.table.hotels">Hotels</th>
+                                        <th data-i18n="admin.stats.table.restaurants">Restaurants</th>
+                                        <th data-i18n="admin.stats.table.transports">Transports</th>
+                                        <th data-i18n="admin.stats.table.seats">Seats</th>
+                                        <th data-i18n="admin.stats.table.lastActive">Last Active</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="generateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="admin.modal.generate.title">Generate Invitation Code</h3>
+                <button class="modal-close" onclick="closeModal('generateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label data-i18n="admin.modal.generate.count">Generate Count</label>
+                    <input type="number" id="generateCount" value="1" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="admin.modal.generate.validDays">Valid Days</label>
+                    <input type="number" id="generateDays" value="365" min="1">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="admin.modal.generate.maxUses">Max Uses</label>
+                    <input type="number" id="generateMaxUses" value="1" min="1">
+                    <small style="color:#666" data-i18n="admin.modal.generate.maxUsesHint">Set greater than 1 to allow
+                        multiple users to use the same code</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-small" onclick="closeModal('generateModal')"
+                    data-i18n="admin.modal.cancel">Cancel</button>
+                <button class="btn btn-primary btn-small" onclick="generateCodes()"
+                    data-i18n="admin.modal.generate.button">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="admin.modal.editUser.title">Edit User</h3>
+                <button class="modal-close" onclick="closeModal('editUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label data-i18n="admin.modal.editUser.username">Username</label>
+                    <input type="text" id="editUsername" readonly style="background:#f5f5f5">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="admin.modal.editUser.subscriptionStart">Subscription Start Date</label>
+                    <input type="date" id="editSubscriptionStart">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="admin.modal.editUser.subscriptionEnd">Subscription End Date</label>
+                    <input type="date" id="editSubscriptionEnd">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-small" onclick="closeModal('editUserModal')"
+                    data-i18n="admin.modal.cancel">Cancel</button>
+                <button class="btn btn-primary btn-small" onclick="saveUser()"
+                    data-i18n="admin.modal.editUser.save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="userDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="admin.modal.userDetail.title">User Details</h3>
+                <button class="modal-close" onclick="closeModal('userDetailModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="userDetailContent"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- 引入i18n框架和语言包 -->
+    <script src="js/i18n/zh-CN.js"></script>
+    <script src="js/i18n/en-US.js"></script>
+    <script src="js/i18n/ja-JP.js"></script>
+    <script src="js/i18n/ms-MY.js"></script>
+    <script src="js/i18n/vi-VN.js"></script>
+    <script src="js/i18n/km-KH.js"></script>
+    <script src="js/i18n/mn-MN.js"></script>
+    <script src="js/i18n/bo-CN.js"></script>
+    <script src="js/i18n/th-TH.js"></script>
+    <script src="js/i18n/ko-KR.js"></script>
+    <script src="js/i18n/id-ID.js"></script>
+    <script src="js/i18n/hi-IN.js"></script>
+    <script src="js/i18n/fr-FR.js"></script>
+    <script src="js/i18n/pt-BR.js"></script>
+    <script src="js/i18n/ru-RU.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/config.js"></script>
+
+    <script>
+        // 语言切换功能
+        window.toggleLangMenu = function () {
+            const menuLogin = document.getElementById('langSelectMenu');
+            const menuHeader = document.getElementById('langSelectMenuHeader');
+            if (menuLogin) menuLogin.classList.toggle('show');
+            if (menuHeader) menuHeader.classList.toggle('show');
+        };
+
+        window.switchLang = function (lang) {
+            if (window.i18n) {
+                window.i18n.setLanguage(lang);
+                updateLangBtnText();
+            }
+            window.toggleLangMenu();
+        };
+
+        function updateLangBtnText() {
+            const currentLang = window.i18n ? window.i18n.getLanguage() : 'en-US';
+            const btnTextLogin = document.getElementById('langSelectBtnText');
+            const btnTextHeader = document.getElementById('langSelectBtnTextHeader');
+            const langLabels = {
+                'zh-CN': '中文',
+                'en-US': 'English',
+                'ja-JP': '日本語',
+                'ms-MY': 'Melayu',
+                'vi-VN': 'Tiếng Việt',
+                'km-KH': 'ភាសាខ្មែរ',
+                'mn-MN': 'Монгол',
+                'bo-CN': 'བོད་',
+                'th-TH': 'ภาษาไทย',
+                'ko-KR': '한국어',
+                'id-ID': 'Bahasa Indonesia',
+                'hi-IN': 'हिन्दी',
+                'fr-FR': 'Français',
+                'pt-BR': 'Português',
+                'ru-RU': 'Русский'
+            };
+            if (btnTextLogin) {
+                btnTextLogin.textContent = langLabels[currentLang] || 'English';
+            }
+            if (btnTextHeader) {
+                btnTextHeader.textContent = langLabels[currentLang] || 'English';
+            }
+        }
+
+        // 初始化语言 - i18n.js会自动初始化，这里只需要更新按钮文本
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLangBtnText();
+        });
+
+        // 使用配置文件中的API地址
+        const API_BASE = window.APP_CONFIG.API_BASE;
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',  // 自动发送Cookie
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showError(data.detail || (window.i18n ? window.i18n.t('admin.error.loginFailed') : 'Login failed'));
+                    return;
+                }
+
+                // Token已自动存储在HttpOnly Cookie中
+                // 验证用户身份
+                const meRes = await fetch(`${API_BASE}/auth/me`, {
+                    credentials: 'include'  // 自动发送Cookie
+                });
+                const user = await meRes.json();
+
+                if (!user.is_admin) {
+                    showError(window.i18n ? window.i18n.t('admin.error.notAdmin') : 'You are not an admin and cannot access this page');
+                    return;
+                }
+
+                localStorage.setItem('admin_user', JSON.stringify(user));
+                showAdminPage(user);
+            } catch (e) {
+                showError(window.i18n ? window.i18n.t('admin.error.networkError') : 'Network error');
+            }
+        });
+
+        function showError(msg) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function showAdminPage(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPage').style.display = 'block';
+            // 隐藏登录页的语言切换按钮
+            document.getElementById('loginLangSelect').style.display = 'none';
+            document.getElementById('adminName').textContent = user.username;
+            loadDashboard();
+        }
+
+        function logout() {
+            // 调用后端logout接口清除HttpOnly Cookie
+            fetch(`${API_BASE}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            }).catch(() => { });
+            localStorage.removeItem('admin_user');
+            // 恢复登录页的语言切换按钮
+            document.getElementById('loginLangSelect').style.display = 'block';
+            location.reload();
+        }
+
+        async function api(path, options = {}) {
+            const res = await fetch(`${API_BASE}${path}`, {
+                ...options,
+                credentials: 'include',  // 自动发送Cookie
+                headers: {
+                    ...options.headers
+                }
+            });
+            return res.json();
+        }
+
+        async function loadDashboard() {
+            const stats = await api('/admin/stats');
+            document.getElementById('statUsers').textContent = stats.users || 0;
+            document.getElementById('statConferences').textContent = stats.conferences || 0;
+            document.getElementById('statParticipants').textContent = stats.participants || 0;
+            document.getElementById('statCodes').textContent = stats.invitation_codes || 0;
+        }
+
+        async function loadCodes() {
+            const codes = await api('/admin/invitation-codes');
+            const tbody = document.getElementById('codesTable');
+            tbody.innerHTML = codes.map(c => {
+                const usedCount = c.used_count || 0;
+                const maxUses = c.max_uses || 1;
+                const isExhausted = usedCount >= maxUses;
+                const statusClass = isExhausted ? 'used' : 'unused';
+                const statusText = isExhausted ?
+                    (window.i18n ? window.i18n.t('admin.codes.status.exhausted') : 'Exhausted') :
+                    (window.i18n ? window.i18n.t('admin.codes.status.available') : 'Available');
+
+                return `
+                <tr>
+                    <td><code>${c.code}</code></td>
+                    <td>${c.duration_days} ${window.i18n ? window.i18n.t('admin.codes.days') : 'days'}</td>
+                    <td>${usedCount} / ${maxUses}</td>
+                    <td><span class="status-badge status-${statusClass}">${statusText}</span></td>
+                    <td>${c.last_used_at ? c.last_used_at.split('T')[0] : '-'}</td>
+                    <td>${c.created_at ? c.created_at.split('T')[0] : '-'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-outline btn-small" onclick="editCode('${c.code}', ${c.duration_days}, ${maxUses})">${window.i18n ? window.i18n.t('admin.action.edit') : 'Edit'}</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteCode('${c.code}')">${window.i18n ? window.i18n.t('admin.action.delete') : 'Delete'}</button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        async function loadUsers() {
+            const users = await api('/admin/users');
+            const tbody = document.getElementById('usersTable');
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.username}</td>
+                    <td>${u.email || '-'}</td>
+                    <td>${u.is_admin ? '<span class="status-badge status-unused">' + (window.i18n ? window.i18n.t('admin.users.role.admin') : 'Admin') + '</span>' : (window.i18n ? window.i18n.t('admin.users.role.user') : 'User')}</td>
+                    <td>${u.subscription_start ? u.subscription_start.split('T')[0] : '-'}</td>
+                    <td>${u.subscription_end ? u.subscription_end.split('T')[0] : '-'}</td>
+                    <td>${u.last_active_at ? u.last_active_at.split('T')[0] : '-'}</td>
+                    <td>
+                        ${!u.is_admin ? `
+                        <div class="action-btns">
+                            <button class="btn btn-outline btn-small" onclick="openEditUserModal(${u.id}, '${u.username}', '${u.subscription_start || ''}', '${u.subscription_end || ''}')">${window.i18n ? window.i18n.t('admin.action.edit') : 'Edit'}</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteUser(${u.id}, '${u.username}')">${window.i18n ? window.i18n.t('admin.action.delete') : 'Delete'}</button>
+                        </div>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadStats() {
+            const stats = await api('/admin/user-stats');
+            const tbody = document.getElementById('statsTable');
+            tbody.innerHTML = stats.map(s => `
+                <tr>
+                    <td>${s.username}</td>
+                    <td>${s.conference_count}</td>
+                    <td>${s.participant_count}</td>
+                    <td>${s.hotel_count}</td>
+                    <td>${s.restaurant_count}</td>
+                    <td>${s.transport_count}</td>
+                    <td>${s.seating_count}</td>
+                    <td>${s.last_active_at ? s.last_active_at.split('T')[0] : '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+            document.getElementById(`tab-${tab}`).style.display = 'block';
+            document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.admin-nav a[href="#${tab}"]`).classList.add('active');
+
+            if (tab === 'codes') loadCodes();
+            if (tab === 'users') loadUsers();
+            if (tab === 'stats') loadStats();
+            if (tab === 'dashboard') loadDashboard();
+        }
+
+        function openGenerateModal() {
+            document.getElementById('generateModal').classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        async function generateCodes() {
+            const count = parseInt(document.getElementById('generateCount').value);
+            const days = parseInt(document.getElementById('generateDays').value);
+            const maxUses = parseInt(document.getElementById('generateMaxUses').value);
+
+            const result = await api('/admin/invitation-codes/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ count, duration_days: days, max_uses: maxUses })
+            });
+
+            if (result.codes) {
+                showToast(`成功生成 ${result.codes.length} 个邀请码`);
+                closeModal('generateModal');
+                loadCodes();
+            } else {
+                showToast(result.detail || '生成失败');
+            }
+        }
+
+        async function editCode(code, currentDays, currentMaxUses) {
+            const newDays = prompt(`修改邀请码 ${code} 的有效天数:`, currentDays);
+            if (newDays === null) return;
+
+            const newMaxUses = prompt(`修改邀请码 ${code} 的可使用次数:`, currentMaxUses);
+            if (newMaxUses === null) return;
+
+            const result = await api(`/admin/invitation-codes/${code}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    duration_days: parseInt(newDays),
+                    max_uses: parseInt(newMaxUses)
+                })
+            });
+            if (result.success) {
+                showToast(window.i18n ? window.i18n.t('admin.success.editSuccess') : 'Edited successfully');
+                loadCodes();
+            } else {
+                showToast(result.detail || (window.i18n ? window.i18n.t('admin.error.editFailed') : 'Edit failed'));
+            }
+        }
+
+        async function deleteCode(code) {
+            const confirmMsg = window.i18n ?
+                window.i18n.t('admin.confirm.deleteCode', { code: code }) :
+                `Are you sure you want to delete invitation code ${code}?`;
+            if (!confirm(confirmMsg)) return;
+
+            const result = await api(`/admin/invitation-codes/${code}`, { method: 'DELETE' });
+            if (result.success) {
+                showToast(window.i18n ? window.i18n.t('admin.success.deleteSuccess') : 'Deleted successfully');
+                loadCodes();
+            } else {
+                showToast(result.detail || (window.i18n ? window.i18n.t('admin.error.deleteFailed') : 'Delete failed'));
+            }
+        }
+
+        function openEditUserModal(id, username, subStart, subEnd) {
+            document.getElementById('editUserId').value = id;
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editSubscriptionStart').value = subStart ? subStart.split('T')[0] : '';
+            document.getElementById('editSubscriptionEnd').value = subEnd ? subEnd.split('T')[0] : '';
+            document.getElementById('editUserModal').classList.add('active');
+        }
+
+        async function saveUser() {
+            const id = document.getElementById('editUserId').value;
+            const subStart = document.getElementById('editSubscriptionStart').value;
+            const subEnd = document.getElementById('editSubscriptionEnd').value;
+
+            const result = await api(`/admin/users/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subscription_start: subStart || null,
+                    subscription_end: subEnd || null
+                })
+            });
+
+            if (result.success) {
+                showToast(window.i18n ? window.i18n.t('admin.success.saveSuccess') : 'Saved successfully');
+                closeModal('editUserModal');
+                loadUsers();
+            } else {
+                showToast(result.detail || (window.i18n ? window.i18n.t('admin.error.saveFailed') : 'Save failed'));
+            }
+        }
+
+        async function deleteUser(id, username) {
+            const confirmMsg = window.i18n ?
+                window.i18n.t('admin.confirm.deleteUser', { username: username }) :
+                `Are you sure you want to delete user ${username}? This will delete all user data!`;
+            if (!confirm(confirmMsg)) return;
+
+            const result = await api(`/admin/users/${id}`, { method: 'DELETE' });
+            if (result.success) {
+                showToast(window.i18n ? window.i18n.t('admin.success.deleteSuccess') : 'Deleted successfully');
+                loadUsers();
+            } else {
+                showToast(result.detail || (window.i18n ? window.i18n.t('admin.error.deleteFailed') : 'Delete failed'));
+            }
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        // 页面加载时检查登录状态（通过Cookie验证）
+        async function checkLoginStatus() {
+            try {
+                const meRes = await fetch(`${API_BASE}/auth/me`, {
+                    credentials: 'include'  // 自动发送Cookie
+                });
+                if (meRes.ok) {
+                    const user = await meRes.json();
+                    if (user.is_admin) {
+                        localStorage.setItem('admin_user', JSON.stringify(user));
+                        showAdminPage(user);
+                    }
+                }
+            } catch (e) {
+                // 未登录或登录已过期
+            }
+        }
+        checkLoginStatus();
+    </script>
+</body>
+
+</html>

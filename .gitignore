@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+package-lock.json
+
+# Wrangler
+.wrangler/
+dist/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# 临时文件
+*.ps1
+*.sql
+worker-errors.txt
+
+# 测试文档
+测试文档/
+
+# 分析报告
+*.md
+!README.md
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# Trae AI
+.trae/
+
+# 日志
+*.log
+logs/
+
+# 临时测试文件
+test-*.js
+temp-*.js
+*-test.js
+*-temp.js
