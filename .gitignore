@@ -22,7 +22,7 @@ worker-errors.txt
 
 # 分析报告
 *.md
-!README.md
+!README*.md
 
 # 环境变量
 .env
