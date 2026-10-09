@@ -1,200 +1,83 @@
-# 会议接待助手 - 多语言国际化系统
+# 多语言会议接待系统 | Multi-language Conference Assistant
 
-## 项目简介
+基于 Cloudflare Workers + Pages + D1 构建的多语言会议接待管理系统，原生支持 **16 种界面语言**，覆盖亚洲主要语言与常用国际语言。
 
-这是一个支持17种语言的会议接待管理系统，实现了完整的多语言国际化功能。系统可以根据用户选择的语言自动切换界面和数据显示，为不同国家和地区的用户提供本地化的服务体验。
+Built on Cloudflare Workers + Pages + D1, with native support for **16 interface languages**.
 
-## 主要功能
+## 支持语言 | Supported Languages
 
-### 🌍 多语言支持
-支持17种语言的实时切换：
-- 中文（简体） - zh-CN
-- 英语 - en-US
-- 日语 - ja-JP
-- 韩语 - ko-KR
-- 越南语 - vi-VN
-- 泰语 - th-TH
-- 印尼语 - id-ID
-- 马来语 - ms-MY
-- 高棉语（柬埔寨） - km-KH
-- 蒙语 - mn-MN
-- 藏语 - bo-CN
-- 印地语 - hi-IN
-- 法语 - fr-FR
-- 葡萄牙语（巴西） - pt-BR
-- 俄语 - ru-RU
-- 阿拉伯语 - ar-SA
+| # | 代码 Code | 语言 Language | 界面原名 Native Name |
+|---|-----------|---------------|----------------------|
+| 1 | `zh-CN` | 简体中文 | 中文 |
+| 2 | `en-US` | 英语 English | English |
+| 3 | `ja-JP` | 日语 Japanese | 日本語 |
+| 4 | `ko-KR` | 韩语 Korean | 한국어 |
+| 5 | `th-TH` | 泰语 Thai | ภาษาไทย |
+| 6 | `vi-VN` | 越南语 Vietnamese | Tiếng Việt |
+| 7 | `id-ID` | 印尼语 Indonesian | Bahasa Indonesia |
+| 8 | `ms-MY` | 马来语 Malay | Bahasa Melayu |
+| 9 | `hi-IN` | 印地语 Hindi | हिन्दी |
+| 10 | `bo-CN` | 藏语 Tibetan | བོད་ཡིག |
+| 11 | `mn-MN` | 蒙古语 Mongolian | Монгол |
+| 12 | `km-KH` | 高棉语（柬埔寨）Khmer | ភាសាខ្មែរ |
+| 13 | `ar-SA` | 阿拉伯语 Arabic | العربية |
+| 14 | `ru-RU` | 俄语 Russian | Русский |
+| 15 | `fr-FR` | 法语 French | Français |
+| 16 | `pt-BR` | 葡萄牙语（巴西）Portuguese | Português |
 
-### 🎯 核心功能
-1. **参与者管理**：增删改查、批量导入、模板下载、数据验证
-2. **会议统计**：实时统计参会人数、住宿、用餐、交通等信息
-3. **多语言界面**：所有界面元素（按钮、标题、提示等）自动翻译
-4. **多语言数据**：演示数据支持按语言过滤显示
-5. **快速体验**：一键体验功能，无需注册即可查看系统功能
+> 语言切换在登录页与系统头部均可一键完成，选择结果自动记忆。
 
-### 💡 技术特点
-- 前端：原生JavaScript实现，无需框架依赖
-- 国际化：自定义i18n系统，支持动态语言切换
-- 后端：Node.js + Cloudflare Workers
-- 数据库：Cloudflare D1（SQLite）
-- 部署：Cloudflare Pages，支持自动部署
+## 功能特性 | Features
 
-## 项目结构
+- **多语言界面**：16 种语言全量翻译，含藏文、高棉文等复杂文字排版
+- **会议接待管理**：会议信息、参会人员、座位安排、用餐、酒店住宿、车辆行程一站式管理
+- **邀请码注册**：邀请码控制注册与订阅时长，支持次数限制
+- **安全机制**：登录失败锁定（暴力破解防护）、HttpOnly Cookie 会话、密码哈希存储
+- **订阅管理**：按邀请码时长自动计算订阅有效期
+
+## 技术架构 | Architecture
+
+| 组件 | 说明 |
+|------|------|
+| Cloudflare Workers | API 服务（Hono 框架），自定义域名接入 |
+| Cloudflare Pages | 前端静态资源托管 + Functions 反向代理 |
+| Cloudflare D1 | 主数据库（用户、会议、人员、邀请码等） |
+| Cloudflare KV | 登录失败计数 / 锁定状态等临时状态 |
+| 前端 | 原生 HTML/CSS/JS，无构建依赖 |
+
+## 目录结构 | Structure
 
 ```
 i18n/
-├── nodejs/
-│   ├── static/
-│   │   ├── index.html          # 主页面
-│   │   ├── css/
-│   │   │   └── main.css        # 样式文件
-│   │   └── js/
-│   │       ├── i18n/
-│   │       │   ├── i18n.js     # 国际化核心逻辑
-│   │       │   ├── zh-CN.js    # 中文语言包
-│   │       │   ├── en-US.js    # 英语语言包
-│   │       │   └── ...         # 其他语言包
-│   │       ├── auth.js         # 登录认证
-│   │       ├── participants.js # 司仪者管理
-│   │       └── main.js         # 主逻辑
-│   └── server.js               # 服务器入口
-│   └── package.json            # 项目配置
-├── cloudflare/
-│   └── workers/                # Cloudflare Workers配置
-│   └── d1/                     # 数据库配置
-└── README.md                   # 项目说明文档
+└── nodejs/
+    ├── src/                  # Worker API 源码（Hono）
+    │   ├── routes/           # 路由：auth、会议、座位、酒店等
+    │   ├── middleware/       # 认证中间件
+    │   └── utils/            # 加密、校验、错误码
+    ├── static/               # 前端静态文件（Pages 部署）
+    │   ├── index.html        # 单页应用入口
+    │   ├── js/i18n/          # 16 个语言包（zh-CN.js、en-US.js ...）
+    │   └── css/              # 样式
+    └── functions/api/        # Pages Functions 反向代理到 Worker
 ```
 
-## 快速开始
+## 多语言实现 | i18n Implementation
 
-### 1. 克隆项目
+- 语言包位于 `static/js/i18n/<lang>.js`，每个文件导出该语言的全量文案对象
+- 页面通过 `switchLang(lang, scope)` 切换语言，选择结果持久化到本地
+- 新增语言只需：
+  1. 复制任意语言包为 `static/js/i18n/<新代码>.js` 并翻译
+  2. 在 `index.html` 的登录页与头部语言列表各加一项 `<li data-lang="...">`
+  3. 无需改动后端
+
+## 部署 | Deployment
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/i18n-conference-assistant.git
-cd i18n-conference-assistant
+# API（Workers）
+npx wrangler deploy
+
+# 前端（Pages，生产分支为 main）
+npx wrangler pages deploy static --project-name=hwi18n --branch main
 ```
 
-### 2. 安装依赖
-```bash
-cd nodejs
-npm install
-```
-
-### 3. 配置Cloudflare
-- 创建Cloudflare账号
-- 创建D1数据库
-- 配置Workers和Pages
-
-### 4. 本地开发
-```bash
-npm start
-```
-
-### 5. 部署到Cloudflare Pages
-```bash
-npx wrangler pages deploy static --project-name=hwi18n
-```
-
-## 使用说明
-
-### 登录系统
-- **测试账号**：用户名 `test`，密码 `test123`
-- **快速体验**：点击"立即体验"按钮，无需登录即可查看演示数据
-
-### 切换语言
-在登录页面右上角选择语言，系统会自动切换：
-- 所有界面文字翻译
-- 表格标题和按钮翻译
-- 演示数据按语言过滤显示
-
-### 参与者管理
-- **添加**：点击"添加"按钮，填写参与者信息
-- **编辑**：点击表格中的"编辑"按钮
-- **删除**：点击表格中的"删除"按钮
-- **批量导入**：下载模板，填写Excel数据，批量导入
-- **数据验证**：验证导入数据的正确性
-
-## 技术架构
-
-### 前端技术栈
-- **原生JavaScript**：无框架依赖，轻量高效
-- **CSS3**：现代化样式，支持响应式设计
-- **HTML5**：语义化标签，良好的可访问性
-
-### 国际化实现
-- **语言包管理**：每个语言独立的语言包文件
-- **动态翻译**：通过data-i18n属性自动翻译
-- **语言切换**：实时切换，无需刷新页面
-- **数据过滤**：根据语言过滤显示对应的演示数据
-
-### 后端技术栈
-- **Node.js**：轻量级后端服务
-- **Cloudflare Workers**：边缘计算，全球部署
-- **Cloudflare D1**：SQLite数据库，云端托管
-
-## 数据库设计
-
-### 主要表结构
-
-#### participants（参与者表）
-```sql
-CREATE TABLE participants (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    conference_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    phone TEXT,
-    company TEXT NOT NULL,
-    department TEXT,
-    position TEXT,
-    title TEXT,
-    is_attending INTEGER DEFAULT 0,
-    has_meal INTEGER DEFAULT 0,
-    has_hotel INTEGER DEFAULT 0,
-    has_transport INTEGER DEFAULT 0,
-    language TEXT DEFAULT 'zh-CN',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## 部署说明
-
-### Cloudflare Pages自动部署
-1. 连接GitHub仓库到Cloudflare Pages
-2. 配置构建命令：`cd nodejs && npm install`
-3. 配置输出目录：`nodejs/static`
-4. 每次推送代码到GitHub，自动触发部署
-
-### 数据库配置
-1. 创建D1数据库
-2. 配置数据库ID和API Token
-3. 运行数据库迁移脚本
-
-## 开发团队
-
-本项目是一个多语言国际化演示项目，展示了如何实现完整的多语言支持功能。
-
-## 许可证
-
-MIT License
-
-## 联系方式
-
-如有问题或建议，请通过GitHub Issues联系我们。
-
-## 更新日志
-
-### v1.0.0 (2025-06-30)
-- ✅ 完成17种语言的国际化支持
-- ✅ 实现参与者管理功能
-- ✅ 实现多语言数据过滤显示
-- ✅ 完成Cloudflare Pages部署
-- ✅ 添加快速体验功能
-- ✅ 修复所有语言数据显示问题
-- ✅ 完善按钮样式和位置
-
----
-
-**在线演示**：https://hwi18n.106605.xyz/
-
-**项目地址**：https://github.com/YOUR_USERNAME/i18n-conference-assistant
+密码策略：注册与修改密码仅要求**至少 6 位**，无复杂度限制（测试系统定位）。
