@@ -28,6 +28,7 @@ const enUS = {
       enterEmail: 'Enter email',
       enterPassword: 'Enter password',
       enterConfirmPassword: 'Enter password again',
+      passwordHint: 'At least 8 characters, including uppercase, lowercase, numbers and special characters',
       enterInvitationCode: 'Enter invitation code',
       passwordMismatch: 'Passwords do not match',
       haveAccount: 'Already have an account? Login',

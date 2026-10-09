@@ -28,6 +28,7 @@ const msMY = {
       enterEmail: 'Masukkan e-mel',
       enterPassword: 'Masukkan kata laluan',
       enterConfirmPassword: 'Masukkan kata laluan sekali lagi',
+      passwordHint: 'Sekurang-kurangnya 8 aksara, termasuk huruf besar, huruf kecil, nombor dan aksara khas',
       enterInvitationCode: 'Masukkan kod jemputan',
       passwordMismatch: 'Kata laluan tidak sepadan',
       haveAccount: 'Sudah ada akaun? Log masuk',

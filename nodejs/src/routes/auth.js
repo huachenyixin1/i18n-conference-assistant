@@ -12,52 +12,6 @@ const app = new Hono();
 const MAX_ATTEMPTS = 5;  // 最大失败次数
 const LOCKOUT_TIME = 15 * 60 * 1000;  // 锁定时间（15分钟）
 
-// 密码强度验证函数
-function validatePasswordStrength(password) {
-  const errors = [];
-
-  if (password.length < 8) {
-    errors.push('密码至少8个字符');
-  }
-
-  if (!/[a-z]/.test(password)) {
-    errors.push('密码必须包含小写字母');
-  }
-
-  if (!/[A-Z]/.test(password)) {
-    errors.push('密码必须包含大写字母');
-  }
-
-  if (!/[0-9]/.test(password)) {
-    errors.push('密码必须包含数字');
-  }
-
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-    errors.push('密码必须包含特殊字符');
-  }
-
-  // 检查常见弱密码
-  const weakPasswords = [
-    'password', '12345678', 'admin123', 'qwerty123',
-    'letmein', 'welcome', 'monkey', 'dragon'
-  ];
-
-  if (weakPasswords.includes(password.toLowerCase())) {
-    errors.push('密码过于简单，请选择其他密码');
-  }
-
-  // 检查连续字符
-  if (/(.)\1{2,}/.test(password)) {
-    errors.push('密码不应包含连续重复字符');
-  }
-
-  // 检查顺序字符
-  if (/abc|123|qwe|asd/i.test(password)) {
-    errors.push('密码不应包含顺序字符');
-  }
-
-  return errors;
-}
 
 /**
  * 检查账户是否被锁定
@@ -146,20 +100,14 @@ app.post('/register', async (c) => {
     return errorResponse(c, ErrorCodes.INVALID_INPUT, '邮箱格式不正确', 400);
   }
 
-  if (!validateStringLength(password, 8, 100)) {
-    return errorResponse(c, ErrorCodes.INVALID_INPUT, '密码长度必须在8-100个字符之间', 400);
+  if (!validateStringLength(password, 6, 100)) {
+    return errorResponse(c, ErrorCodes.INVALID_INPUT, '密码至少6个字符', 400);
   }
 
   if (!validateInvitationCode(invitation_code)) {
     return errorResponse(c, ErrorCodes.INVALID_INPUT, '邀请码格式不正确', 400);
   }
 
-  // 密码强度验证
-  const passwordErrors = validatePasswordStrength(password);
-  if (passwordErrors.length > 0) {
-    return errorResponse(c, ErrorCodes.WEAK_PASSWORD,
-      `密码强度不足：${passwordErrors.join(', ')}`, 400);
-  }
 
   if (!invitation_code) {
     return errorResponse(c, ErrorCodes.INVALID_INVITATION_CODE);

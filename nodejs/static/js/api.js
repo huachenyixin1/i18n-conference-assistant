@@ -34,12 +34,12 @@ async function request(url, options = {}) {
         if (!response.ok) {
             let errorMsg = i18n.t('error.OPERATION_FAILED');
 
-            // 如果后端返回了错误码，就翻译
-            if (data.code) {
+            // Prefer backend-specific reason when it is clean (no U+FFFD); otherwise translate the error code
+            const rawMsg = data.message || data.detail;
+            if (rawMsg && rawMsg.indexOf('\uFFFD') === -1) {
+                errorMsg = rawMsg;
+            } else if (data.code) {
                 errorMsg = i18n.t(`error.${data.code}`);
-            } else if (data.detail) {
-                // 后端还没改，暂时用detail
-                errorMsg = data.detail;
             }
 
             // 特殊处理401错误

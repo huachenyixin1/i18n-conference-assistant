@@ -28,6 +28,7 @@ const idID = {
       enterEmail: 'Masukkan email',
       enterPassword: 'Masukkan kata sandi',
       enterConfirmPassword: 'Masukkan kata sandi lagi',
+      passwordHint: 'Minimal 8 karakter, termasuk huruf besar, huruf kecil, angka, dan karakter khusus',
       enterInvitationCode: 'Masukkan kode undangan',
       passwordMismatch: 'Kata sandi tidak cocok',
       haveAccount: 'Sudah punya akun? Masuk',
