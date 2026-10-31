@@ -274,7 +274,7 @@ function clearCurrentConference() {
     currentConference = null;
     localStorage.removeItem('currentConference');
 
-    document.getElementById('conferenceName').textContent = i18n.t('common.noConferenceSelected');
+    document.getElementById('conferenceName').textContent = i18n.t('conference.noConferenceSelected');
     document.getElementById('conferenceCode').textContent = '';
 
     const conferenceInfo = document.querySelector('.conference-info');
@@ -289,7 +289,7 @@ async function initCurrentConference() {
         try {
             currentConference = JSON.parse(saved);
 
-            document.getElementById('conferenceName').textContent = currentConference.title || i18n.t('common.noConferenceSelected');
+            document.getElementById('conferenceName').textContent = currentConference.title || i18n.t('conference.noConferenceSelected');
             document.getElementById('conferenceCode').textContent = currentConference.code || '';
 
             const conferenceInfo = document.querySelector('.conference-info');
