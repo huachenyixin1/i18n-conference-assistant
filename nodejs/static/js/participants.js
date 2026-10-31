@@ -246,7 +246,7 @@ async function saveParticipant() {
         if (editId) {
             result = await put(`/participants/${editId}`, data);
         } else {
-            result = await post(`/participants/`, data);
+            result = await post(`/participants`, data);
         }
 
         showToast(editId ? i18n.t('participants.saveSuccess') : i18n.t('participants.addSuccess'));
