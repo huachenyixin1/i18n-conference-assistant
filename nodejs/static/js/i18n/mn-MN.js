@@ -1,4 +1,4 @@
-window.mnMN = {
+﻿window.mnMN = {
   "auth": {
     "login": {
       "title": "Бага Хурлын Угтан Авалтын Туслах",

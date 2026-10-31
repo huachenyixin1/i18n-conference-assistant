@@ -1,4 +1,4 @@
-let conferences = [];
+﻿let conferences = [];
 
 async function loadConferenceList() {
     try {

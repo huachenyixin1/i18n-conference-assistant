@@ -1,4 +1,4 @@
-// English Language Pack
+﻿// English Language Pack
 const enUS = {
   // Authentication
   auth: {

@@ -1,4 +1,4 @@
-// Cloudflare Pages Functions - API代理
+﻿// Cloudflare Pages Functions - API代理
 // 通过环境变量 API_BASE_URL 配置后端地址
 
 export async function onRequest(context) {

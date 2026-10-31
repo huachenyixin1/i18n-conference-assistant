@@ -1,4 +1,4 @@
-// 错误代码定义 - 与前端语言包中的 error 对应
+﻿// 错误代码定义 - 与前端语言包中的 error 对应
 export const ErrorCodes = {
     // 认证相关
     INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',

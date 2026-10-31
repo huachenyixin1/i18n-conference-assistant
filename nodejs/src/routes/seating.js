@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+﻿import { Hono } from 'hono';
 import { errorResponse } from '../utils/errors.js';
 import { ALLOWED_AREA_FIELDS, validateUpdateData } from '../utils/database.js';
 

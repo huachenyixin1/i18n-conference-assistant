@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 数据库安全辅助函数
  * 用于防止SQL注入攻击
  */
@@ -29,7 +29,8 @@ export async function safeUpdate(db, table, id, data, allowedFields) {
     // 白名单验证 - 只允许指定的字段名
     if (value !== undefined && allowedFields.includes(key)) {
       updateFields.push(`${key} = ?`);
-      values.push(value);
+      // D1 不支持绑定 object/array，JSON 列需先序列化为字符串
+      values.push(value !== null && typeof value === 'object' ? JSON.stringify(value) : value);
     }
   }
 
@@ -85,7 +86,8 @@ export function validateUpdateData(data, allowedFields) {
   for (const [key, value] of Object.entries(data)) {
     if (value !== undefined && allowedFields.includes(key)) {
       fields.push(`${key} = ?`);
-      values.push(value);
+      // D1 不支持绑定 object/array，JSON 列需先序列化为字符串
+      values.push(value !== null && typeof value === 'object' ? JSON.stringify(value) : value);
     }
   }
 

@@ -1,4 +1,4 @@
-let seatingAreas = [];
+﻿let seatingAreas = [];
 let seatingAssignments = [];
 let currentPriorityTab = 'position';
 

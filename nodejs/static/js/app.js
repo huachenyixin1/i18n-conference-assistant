@@ -1,4 +1,4 @@
-let currentConference = null;
+﻿let currentConference = null;
 let currentView = null;
 
 document.addEventListener('DOMContentLoaded', function () {

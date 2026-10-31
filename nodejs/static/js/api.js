@@ -1,4 +1,4 @@
-const API_BASE = window.APP_CONFIG?.API_BASE || '/api';
+﻿const API_BASE = window.APP_CONFIG?.API_BASE || '/api';
 
 async function request(url, options = {}) {
     const lang = window.i18n ? window.i18n.getLanguage() : 'zh-CN';

@@ -1,4 +1,4 @@
-window.frFR = {
+﻿window.frFR = {
   "auth": {
     "login": {
       "title": "Assistant d'accueil de conférence",

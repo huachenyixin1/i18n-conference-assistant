@@ -1,4 +1,4 @@
-window.jaJP = {
+﻿window.jaJP = {
   "auth": {
     "login": {
       "title": "カンファレンス受付アシスタント",

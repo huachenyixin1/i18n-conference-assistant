@@ -1,4 +1,4 @@
-let hotels = [];
+﻿let hotels = [];
 let hotelParticipants = [];
 let hotelAssignments = [];
 let currentAssignRoomId = null;

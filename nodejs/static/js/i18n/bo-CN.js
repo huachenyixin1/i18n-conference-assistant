@@ -1,4 +1,4 @@
-window.boCN = {
+﻿window.boCN = {
   "auth": {
     "login": {
       "title": "ཚོགས་འདུའི་དགའ་བསུའི་རོགས་རམ་པ།",

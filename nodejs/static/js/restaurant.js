@@ -1,4 +1,4 @@
-let restaurants = [];
+﻿let restaurants = [];
 let restaurantParticipants = [];
 let restaurantAssignments = [];
 let pendingSeatIndex = null;

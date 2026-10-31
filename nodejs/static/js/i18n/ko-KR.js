@@ -1,4 +1,4 @@
-window.koKR = {
+﻿window.koKR = {
   "auth": {
     "login": {
       "title": "회의 환영 어시스턴트",

@@ -1,4 +1,4 @@
-window.ruRU = {
+﻿window.ruRU = {
   "auth": {
     "login": {
       "title": "Помощник по приёму конференций",

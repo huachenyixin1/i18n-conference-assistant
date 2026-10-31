@@ -1,4 +1,4 @@
-window.hiIN = {
+﻿window.hiIN = {
   "auth": {
     "login": {
       "title": "सम्मेलन स्वागत सहायक",

@@ -1,4 +1,4 @@
-window.zhCN = {
+﻿window.zhCN = {
   "auth": {
     "login": {
       "title": "会议接待助手",

@@ -1,4 +1,4 @@
-async function loadProfile() {
+﻿async function loadProfile() {
     try {
         const user = await get('/auth/me');
         if (user) {

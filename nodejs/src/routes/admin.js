@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+﻿import { Hono } from 'hono';
 import { authMiddleware, adminMiddleware, getCurrentUserId } from '../middleware/auth.js';
 import { ErrorCodes, errorResponse } from '../utils/errors.js';
 import { ALLOWED_USER_FIELDS, validateUpdateData } from '../utils/database.js';

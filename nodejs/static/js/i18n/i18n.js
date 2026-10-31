@@ -1,4 +1,4 @@
-// i18n 核心模块
+﻿// i18n 核心模块
 // 语言包通过全局变量加载（zh-CN.js和en-US.js会设置window.zhCN和window.enUS）
 
 // 默认语言

@@ -1,4 +1,4 @@
-window.kmKH = {
+﻿window.kmKH = {
   "auth": {
     "login": {
       "title": "ជំនួយការទទួលសន្និសីទ",

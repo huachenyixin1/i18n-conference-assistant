@@ -1,4 +1,4 @@
-async function loadAdmin() {
+﻿async function loadAdmin() {
     await Promise.all([
         loadInvitationCodes(),
         loadUsers()

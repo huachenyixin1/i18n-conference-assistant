@@ -1,4 +1,4 @@
-// Bahasa Indonesia Language Pack (Indonesian)
+﻿// Bahasa Indonesia Language Pack (Indonesian)
 const idID = {
   // Otentikasi
   auth: {

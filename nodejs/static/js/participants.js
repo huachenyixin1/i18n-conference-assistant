@@ -1,4 +1,4 @@
-let participants = [];
+﻿let participants = [];
 let selectedIds = new Set();
 let currentPage = 1;
 let pageSize = 20;

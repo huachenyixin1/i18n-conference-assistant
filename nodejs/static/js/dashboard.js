@@ -1,4 +1,4 @@
-let dashboardConferenceId = null;
+﻿let dashboardConferenceId = null;
 
 function goToCreateConference() {
     showPage('main');

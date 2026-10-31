@@ -1,4 +1,4 @@
-window.thTH = {
+﻿window.thTH = {
   "auth": {
     "login": {
       "title": "ผู้ช่วยต้อนรับการประชุม",

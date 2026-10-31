@@ -1,4 +1,4 @@
-let conferenceId = null;
+﻿let conferenceId = null;
 let transportState = {
     currentDate: new Date(),
     vehicles: [],

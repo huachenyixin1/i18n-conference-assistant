@@ -1,4 +1,4 @@
-window.arSA = {
+﻿window.arSA = {
   "auth": {
     "login": {
       "title": "مساعد استقبال المؤتمرات",

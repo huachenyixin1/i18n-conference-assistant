@@ -1,4 +1,4 @@
-window.viVN = {
+﻿window.viVN = {
   "auth": {
     "login": {
       "title": "Trợ Lý Tiếp Đón Hội Nghị",

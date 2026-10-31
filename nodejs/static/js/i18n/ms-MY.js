@@ -1,4 +1,4 @@
-// Bahasa Melayu Language Pack
+﻿// Bahasa Melayu Language Pack
 const msMY = {
   // Pengesahan
   auth: {

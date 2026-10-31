@@ -1,4 +1,4 @@
-window.ptBR = {
+﻿window.ptBR = {
   "auth": {
     "login": {
       "title": "Assistente de Recepção de Conferências",

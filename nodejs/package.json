@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "jdyspa-api",
   "version": "3.0.0",
   "description": "会议接待助手 API - Cloudflare Workers + D1",

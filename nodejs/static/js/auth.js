@@ -1,4 +1,4 @@
-async function handleLogin() {
+﻿async function handleLogin() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const loginBtn = document.getElementById('loginBtn');
