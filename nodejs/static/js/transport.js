@@ -737,7 +737,7 @@ async function checkUnassignedParticipants() {
     try {
         const allParticipants = await get(`/participants/${conferenceId}`);
 
-        const needTransport = allParticipants.filter(p => p.has_transport === true);
+        const needTransport = allParticipants.filter(p => p.has_transport === true || p.has_transport === 1);
 
         const assignedIds = new Set();
         transportState.tasks.forEach(task => {

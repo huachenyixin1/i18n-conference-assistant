@@ -426,7 +426,7 @@ function showRestaurantAssignModal(tableId, seatIndex = null) {
 async function loadCompanyFilter() {
     try {
         const participants = await get(`/participants/${restaurantState.conferenceId}`);
-        const mealParticipants = participants.filter(p => p.has_meal === true);
+        const mealParticipants = participants.filter(p => p.has_meal === true || p.has_meal === 1);
         const companies = [...new Set(mealParticipants.map(p => p.company).filter(c => c))];
         companies.sort();
 
@@ -452,7 +452,7 @@ function closeRestaurantAssignModal() {
 async function loadParticipantsForAssign(companyFilter = '') {
     try {
         const participants = await get(`/participants/${restaurantState.conferenceId}`);
-        const mealParticipants = participants.filter(p => p.has_meal === true);
+        const mealParticipants = participants.filter(p => p.has_meal === true || p.has_meal === 1);
 
         const assignments = await get(`/restaurant/${restaurantState.conferenceId}/assignments?meal_type=${restaurantState.mealType}`);
         const assignedIds = [...new Set(assignments.map(a => a.participant_id))];
