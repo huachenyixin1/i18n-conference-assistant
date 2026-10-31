@@ -447,6 +447,7 @@
     "hotelLabel": "សណ្ឋាគារ",
     "transportLabel": "ដឹកជញ្ជូន",
     "noData": "គ្មានទិន្នន័យ",
+    "noSearchResult": "មិនមានលទ្ធផលផ្គូផ្គងនឹងការស្វែងរកទេ",
     "prevPage": "មុន",
     "nextPage": "បន្ទាប់",
     "pageInfo": "ទំព័រ {current} / {total}",

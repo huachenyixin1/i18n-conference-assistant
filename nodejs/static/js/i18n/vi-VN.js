@@ -447,6 +447,7 @@
     "hotelLabel": "Khách sạn",
     "transportLabel": "V?n chuy?n",
     "noData": "Không có dữ liệu",
+    "noSearchResult": "Không có kết quả phù hợp với tìm kiếm",
     "prevPage": "Tr??c",
     "nextPage": "Sau",
     "pageInfo": "Trang {current} / {total}",

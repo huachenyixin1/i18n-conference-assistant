@@ -447,6 +447,7 @@
     "hotelLabel": "โรงแรม",
     "transportLabel": "การขนส่ง",
     "noData": "ไม่มีข้อมูล",
+    "noSearchResult": "ไม่พบผลลัพธ์ที่ตรงกับการค้นหา",
     "prevPage": "ก่อนหน้า",
     "nextPage": "ถัดไป",
     "pageInfo": "หน้า {current} / {total}",

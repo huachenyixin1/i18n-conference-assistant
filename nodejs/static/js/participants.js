@@ -6,6 +6,12 @@ let searchKeyword = '';
 let validationResults = null;
 let participantsConferenceId = null;
 
+// 清除浏览器刷新后残留在搜索框中的旧关键词，避免刷新后一敲键盘表格就被旧关键词过滤为空
+(function clearStaleSearchInput() {
+    const el = document.getElementById('searchInput');
+    if (el) el.value = '';
+})();
+
 async function loadParticipants(conferenceId) {
     participantsConferenceId = conferenceId;
     try {
@@ -16,7 +22,8 @@ async function loadParticipants(conferenceId) {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         if (currentUser.username === 'test') {
             const currentLanguage = i18n.getLanguage() || 'zh-CN';
-            participants = participants.filter(p => p.language === currentLanguage);
+            // 仅过滤带有语言标记的数据，旧数据无 language 字段时不应被全部过滤掉
+            participants = participants.filter(p => !p.language || p.language === currentLanguage);
             console.log(`[Language Filter] Test user detected, showing ${currentLanguage} data (${participants.length} participants)`);
         }
 
@@ -85,7 +92,10 @@ function renderParticipantsTable() {
     if (!tbody) return;
 
     if (pageData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">' + i18n.t('participants.noData') + '</td></tr>';
+        const emptyMsg = (participants.length > 0 && filtered.length === 0)
+            ? i18n.t('participants.noSearchResult')
+            : i18n.t('participants.noData');
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;">' + emptyMsg + '</td></tr>';
     } else {
         tbody.innerHTML = pageData.map(p => {
             const validation = validationResults ? validationResults.find(v => v.id === p.id) : null;
@@ -161,7 +171,7 @@ function updateButtons() {
 }
 
 function searchParticipants() {
-    searchKeyword = document.getElementById('searchInput').value;
+    searchKeyword = document.getElementById('searchInput').value.trim();
     currentPage = 1;
     renderParticipantsTable();
 }

@@ -447,6 +447,7 @@
     "hotelLabel": "ホテル",
     "transportLabel": "交通",
     "noData": "データがありません",
+    "noSearchResult": "検索に一致する結果がありません",
     "prevPage": "前へ",
     "nextPage": "次へ",
     "pageInfo": "{current} / {total} ページ",

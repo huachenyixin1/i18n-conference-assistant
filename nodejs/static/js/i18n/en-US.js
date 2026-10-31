@@ -497,6 +497,7 @@ const enUS = {
     hotelLabel: 'Hotel',
     transportLabel: 'Transport',
     noData: 'No data',
+    noSearchResult: 'No results match your search',
     prevPage: 'Previous',
     nextPage: 'Next',
     pageInfo: 'Page {current} of {total}',

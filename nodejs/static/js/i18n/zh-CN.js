@@ -450,6 +450,7 @@
     "hotelLabel": "住宿",
     "transportLabel": "接送",
     "noData": "暂无数据",
+    "noSearchResult": "搜索无匹配结果",
     "prevPage": "上一页",
     "nextPage": "下一页",
     "pageInfo": "第 {current} 页，共 {total} 页",

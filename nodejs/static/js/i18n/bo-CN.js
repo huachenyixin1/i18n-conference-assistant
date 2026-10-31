@@ -447,6 +447,7 @@
     "hotelLabel": "མགྲོན་ཁང་།",
     "transportLabel": "འདྲེན་འཁོར།",
     "noData": "གནས་ཚུལ་མེད།",
+    "noSearchResult": "འཚོལ་བཤེར་མཉམ་མཚུངས་མེད།",
     "prevPage": "སྔོན་མ།",
     "nextPage": "རྗེས་མ།",
     "pageInfo": "ཤོག་ངོས {current} / {total}",

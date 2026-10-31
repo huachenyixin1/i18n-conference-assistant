@@ -447,6 +447,7 @@
     "hotelLabel": "فندق",
     "transportLabel": "نقل",
     "noData": "لا توجد بيانات",
+    "noSearchResult": "لا توجد نتائج مطابقة للبحث",
     "prevPage": "السابق",
     "nextPage": "التالي",
     "pageInfo": "صفحة {current} / {total}",

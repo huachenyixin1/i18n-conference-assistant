@@ -473,6 +473,7 @@ const idID = {
     hotelLabel: 'Hotel',
     transportLabel: 'Transportasi',
     noData: 'Tidak ada data',
+    noSearchResult: 'Tidak ada hasil yang cocok dengan pencarian',
     prevPage: 'Sebelumnya',
     nextPage: 'Selanjutnya',
     pageInfo: 'Halaman {current} / {total}',

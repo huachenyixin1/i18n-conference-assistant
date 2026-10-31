@@ -447,6 +447,7 @@
     "hotelLabel": "Hotel",
     "transportLabel": "Transporte",
     "noData": "Sem dados",
+    "noSearchResult": "Nenhum resultado corresponde à sua pesquisa",
     "prevPage": "Anterior",
     "nextPage": "Próximo",
     "pageInfo": "Página {current} / {total}",

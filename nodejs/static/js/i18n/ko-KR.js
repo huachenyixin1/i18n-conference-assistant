@@ -447,6 +447,7 @@
     "hotelLabel": "??",
     "transportLabel": "??",
     "noData": "데이터 없음",
+    "noSearchResult": "검색 결과가 없습니다",
     "prevPage": "??",
     "nextPage": "??",
     "pageInfo": "페이지 {current} / {total}",

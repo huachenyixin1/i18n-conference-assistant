@@ -488,6 +488,7 @@ const msMY = {
     hotelLabel: 'Hotel',
     transportLabel: 'Pengangkutan',
     noData: 'Tiada data',
+    noSearchResult: 'Tiada hasil sepadan dengan carian',
     prevPage: 'Sebelumnya',
     nextPage: 'Seterusnya',
     pageInfo: 'Halaman {current} daripada {total}',

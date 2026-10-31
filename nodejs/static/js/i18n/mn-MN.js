@@ -447,6 +447,7 @@
     "hotelLabel": "Зочид буудал",
     "transportLabel": "Тээвэр",
     "noData": "Өгөгдөл байхгүй",
+    "noSearchResult": "Хайлтад тохирох үр дүн олдсонгүй",
     "prevPage": "Өмнөх",
     "nextPage": "Дараагийн",
     "pageInfo": "Хуудас {current} / {total}",

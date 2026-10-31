@@ -447,6 +447,7 @@
     "hotelLabel": "Отель",
     "transportLabel": "Транспорт",
     "noData": "Нет данных",
+    "noSearchResult": "Нет результатов по вашему запросу",
     "prevPage": "Предыдущая",
     "nextPage": "Следующая",
     "pageInfo": "Страница {current} / {total}",

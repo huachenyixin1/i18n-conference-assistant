@@ -447,6 +447,7 @@
     "hotelLabel": "होटल",
     "transportLabel": "परिवहन",
     "noData": "कोई डेटा नहीं",
+    "noSearchResult": "खोज से कोई परिणाम मेल नहीं खाता",
     "prevPage": "पिछला",
     "nextPage": "अगला",
     "pageInfo": "पृष्ठ {current} / {total}",
