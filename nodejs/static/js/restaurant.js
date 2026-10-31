@@ -726,15 +726,7 @@ async function exportRestaurantPDF() {
         const noExportElements = restaurantList.querySelectorAll('.no-export');
         noExportElements.forEach(el => el.style.display = 'none');
 
-        const script1 = document.createElement('script');
-        script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        document.head.appendChild(script1);
-        await new Promise(resolve => script1.onload = resolve);
-
-        const script2 = document.createElement('script');
-        script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-        document.head.appendChild(script2);
-        await new Promise(resolve => script2.onload = resolve);
+        await loadPdfVendorLibs();
 
         const { jsPDF } = window.jspdf;
 

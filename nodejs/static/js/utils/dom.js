@@ -319,6 +319,29 @@ function createSelect(className, options) {
     return select;
 }
 
+/**
+ * 加载PDF导出所需的库（html2canvas + jsPDF）
+ * 自托管于 js/vendor/，随站点部署，避免依赖国内访问不稳定的公共CDN
+ * @returns {Promise<void>}
+ * @throws {Error} 库加载失败时抛出（原实现无onerror会导致静默挂起）
+ */
+async function loadPdfVendorLibs() {
+    const loadScript = (src) => new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load ' + src));
+        document.head.appendChild(script);
+    });
+
+    if (!window.html2canvas) {
+        await loadScript('js/vendor/html2canvas.min.js');
+    }
+    if (!window.jspdf) {
+        await loadScript('js/vendor/jspdf.umd.min.js');
+    }
+}
+
 // 导出函数（如果使用模块系统）
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -336,6 +359,7 @@ if (typeof module !== 'undefined' && module.exports) {
         setContainerContent,
         createCheckbox,
         createTextInput,
-        createSelect
+        createSelect,
+        loadPdfVendorLibs
     };
 }
